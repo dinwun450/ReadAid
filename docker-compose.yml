@@ -4,8 +4,8 @@ services:
     container_name: readaid-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: readaid
-      POSTGRES_PASSWORD: readaid_dev
+      POSTGRES_USER: [REDACTED]
+      POSTGRES_PASSWORD: [REDACTED]
       POSTGRES_DB: readaid
     ports:
       - "5432:5432"
@@ -26,8 +26,8 @@ services:
       - "8182:8182"   # Gremlin server
       - "7687:7687"   # openCypher over Bolt
     environment:
-      - PUPPYGRAPH_USERNAME=puppygraph
-      - PUPPYGRAPH_PASSWORD=puppygraph123
+      - PUPPYGRAPH_USERNAME=[REDACTED]
+      - PUPPYGRAPH_PASSWORD=[REDACTED]
       - QUERY_TIMEOUT=5m
       - STORAGE_PATH_ROOT=/data/storage
     volumes:
