@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: readaid-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: readaid
+      POSTGRES_PASSWORD: readaid_dev
+      POSTGRES_DB: readaid
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U readaid -d readaid"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  puppygraph:
+    image: puppygraph/puppygraph:latest
+    container_name: puppy
+    pull_policy: always
+    ports:
+      - "8081:8081"   # Web UI and REST API
+      - "8182:8182"   # Gremlin server
+      - "7687:7687"   # openCypher over Bolt
+    environment:
+      - PUPPYGRAPH_USERNAME=puppygraph
+      - PUPPYGRAPH_PASSWORD=puppygraph123
+      - QUERY_TIMEOUT=5m
+      - STORAGE_PATH_ROOT=/data/storage
+    volumes:
+      - puppygraph-data:/data/storage
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  puppygraph-data:
